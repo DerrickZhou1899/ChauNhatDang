@@ -1,4 +1,6 @@
-const bodyParser = require('body-parser');   
+import userRoute from './user.routes'
+
+/*const bodyParser = require('body-parser');   
 app.use(bodyParser.json() );
 app.get('/',(request,response)=>{
     response.send("test");
@@ -10,3 +12,7 @@ app.post('/api/news', (request,response)=>{
     console.log(title);
     response.send("submit success");
 })
+*/
+export default{
+    user: userRoute
+}

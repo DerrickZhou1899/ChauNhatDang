@@ -8,12 +8,12 @@ interface Resource {
   type: string;
 }
 
-const ResouceSchema = new mongoose.Schema<Resource>({
+const resouceSchema = new mongoose.Schema<Resource>({
   title: { type: String, required: true },
   type: { type: String, required: true }
 });
   
-const ResourceModel = mongoose.model<Resource>('resources', ResouceSchema);
+const ResourceModel = mongoose.model<Resource>('resources', resouceSchema);
 export default class UserService {
   public static async createResource(query: any) {
       return await ResourceModel.create(query)

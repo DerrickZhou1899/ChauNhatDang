@@ -2,11 +2,23 @@
   "name": "ChauNhatDang",
   "lockfileVersion": 3,
   "requires": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "ts-node src/server.ts"
+  },
   "packages": {},
+  "type": "module",
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.3.0",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.5",
+    "tsx": "^4.7.2"
   }
 }

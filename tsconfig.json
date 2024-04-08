@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+      "module": "ESNext",
+      "declaration": false,
+      "noImplicitAny": false,
+      "removeComments": true,
+      "noLib": false,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "target": "es6",
+      "sourceMap": true,
+      "allowJs": true,
+      "outDir": "./dist",
+      "baseUrl": ".",
+      "esModuleInterop": true,
+      "paths": {
+        "*": [
+          "*"
+        ]
+      },
+      "rootDirs": [
+        "src"
+      ]
+    },
+    "include": [
+      "src/**/*"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+}

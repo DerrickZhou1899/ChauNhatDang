@@ -1,6 +1,6 @@
 const express = require('express');
 import http from 'http';
-const app = express;
+const app = express();
 const mongoose = require('mongoose');
 import routes from "./routes/routes";
 import seeds from "./seeds/index";
@@ -8,27 +8,24 @@ import { ConfigService } from './configs/config';
 import { ResourceModel } from './models/resource';
 import { Types } from 'mongoose';
 
-/*const connectToMongo = () => {
-    mongoose.connect(
-        ConfigService.get('MONGO_URL'),
-        {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            //useCreateIndex: true,
-        },
-    )
-    .then(()=>{
-        console.log('The Mongoose connection is ready');
-    }) 
-    .catch((error)=>{
-        console.log('Some problem with the connection ' + error);
-    })
-}
-*/
+mongoose.connect(
+    ConfigService.get('MONGO_URL2'),
+    //'mongodb://localhost:27017/99tech',
+    {
+        useNewUrlParser : true,
+        useUnifiedTopology : true
+    }
+)
+.then(() => { 
+    console.log("Connected to DB!");
+},
+err => { 
+    console.log(err);
+});
 
 const appServer = http.createServer(app);
 appServer.listen(ConfigService.get('API_PORT'),()=>{
-    console.log(ConfigService.get('MONGO_URL'));
+    console.log(ConfigService.get('MONGO_URL2'));
 });
 
 const seedRunAll = async () => {
@@ -38,25 +35,35 @@ const seedRunAll = async () => {
     }
 };
 seedRunAll()
-    .then((res) => {
-        const port = ConfigService.get('API_PORT');
-            app.listen(parseInt(port)).then(() => {
-            console.log(`App listening on ://localhost:${port}`);
-        });
-    })
-    .catch((err) => console.log(err));
-
-mongoose.connect(
-    //'mongodb://127.0.0.1:27017/99tech',
-    ConfigService.get('MONGO_URL'),
-    {
-    },
-)
-.then(()=>{
-    console.log('The Mongoose connection is ready');
-}) 
-.catch((err)=>{
-    console.log('Some problem with the connection ' + err);
+.then(()=> {
+    console.log('Seed db done' );
 })
+.catch((err) => {
+    console.log(err);
+});
 
-//module.exports = connectToMongo;
+const listResource = async (req, res) => {
+    let data = req.body;
+    let listResources = [];
+    if(data.type != ''){
+        let resultSearch = await ResourceModel.find({
+            type: data.type
+        });
+        listResources = resultSearch;
+    }
+    if(data.type = ''){
+        let resultSearch = await ResourceModel.find({});
+        listResources = resultSearch;
+    }
+    if(!data){
+        res.status(400).send({ message: 'Error, wrong type or syntax'});
+    }
+    if(listResources=[]){
+        return res.status(200).send({message: 'Empty list, please choose another type'});
+    }
+    else {
+        return res.status(200).send({list: listResources});
+    }
+}
+
+app.get("/list-resource", listResource );

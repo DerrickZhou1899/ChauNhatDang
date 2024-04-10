@@ -9,11 +9,16 @@ import { ResourceModel } from './models/resource';
 import { Types } from 'mongoose';
 
 mongoose.connect(
-    ConfigService.get('MONGO_URL2'),
-    //'mongodb://localhost:27017/99tech',
+    //ConfigService.get('MONGO_URL2'),
+    'mongodb://127.0.0.1:27017/99tech',
     {
-        useNewUrlParser : true,
-        useUnifiedTopology : true
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        serverSelectionTimeoutMS: 5000,
+        autoIndex: false, // Don't build indexes
+        maxPoolSize: 10, // Maintain up to 10 socket connections
+        socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+        family: 4
     }
 )
 .then(() => { 
@@ -44,6 +49,7 @@ seedRunAll()
 
 const listResource = async (req, res) => {
     let data = req.body;
+    console.log(data.body);
     let listResources = [];
     if(data.type != ''){
         let resultSearch = await ResourceModel.find({
@@ -65,5 +71,4 @@ const listResource = async (req, res) => {
         return res.status(200).send({list: listResources});
     }
 }
-
 app.get("/list-resource", listResource );

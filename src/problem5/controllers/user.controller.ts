@@ -1,35 +1,42 @@
 const uuid = require('uuid');
 import { Types } from 'mongoose';
 import UserService, { ResourceModel } from '../models/resource';
+
 const listResource = async (req, res) => {
     let data = req.body;
-    console.log("type: "+data.type);
     let listResources = [];
-    if(data.type != ''){
-        console.log(data.type);
-        let resultSearch = await ResourceModel.find({
-            type: data.type
-        });
-        listResources = resultSearch;
-    }
-    if(data.type = ''){
-        let resultSearch = await ResourceModel.find({});
-        listResources = resultSearch;
-    }
-    if(!data){
-        res.status(400).send({ message: 'Error, wrong type or syntax'});
-    }
-    if(listResources=[]){
-        return res.status(200).send({message: 'Empty list, please choose another type'});
-    }
-    else {
-        return res.status(200).send({list: listResources});
+    if(data != ''){
+        listResources = await ResourceModel.aggregate([{
+            $match:
+            {
+                $and:
+                [
+                    {
+                        type: data.type
+                    },
+                    {
+                        price: 
+                        {
+                            $gte: data.minPrice, 
+                            $lte: data.maxPrice          
+                        }
+                    }
+                ]
+            }
+        }]);
+        if(!listResources){
+            return res.status(400).send({message: 'Wrong syntax'});
+        }
+        if(listResources.length > 0){
+            return res.status(200).send(listResources);
+        }
+        else {
+            return res.status(200).send({ message: 'list empty'});
+        }
     }
 }
 const createResource = async (req, res) => {
     let data = req.body;
-    console.log("data: " + data);
-    console.log("data.title: " + data.title);
     const newResource = new ResourceModel({
         _id: new Types.ObjectId(),
         title: data.title,
@@ -68,7 +75,19 @@ const updateResource = async (req, res) => {
     }
 }
 const getResourceDetail = async (req, res) => {
-    
+    let data = req.body;
+    let getDetail = await ResourceModel.find(
+        {
+            _id: data._id
+        }
+    );
+    if(!getDetail){
+        return res.status(400).send({ message: 'Wrong or syntax'});
+    }if(getDetail.length > 0){
+        return res.status(200).send(getDetail);
+    }else{
+        return res.status(200).send({ message: 'Wrong Id'});
+    }
 }
 const deleteOne = async (req, res) => {
     let data = req.body;

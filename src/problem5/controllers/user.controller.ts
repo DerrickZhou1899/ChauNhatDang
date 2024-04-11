@@ -66,10 +66,13 @@ const updateResource = async (req, res) => {
                 title: data.title,
                 type: data.type
             }
+        },
+        {
+            returnDocument: 'after'
         }
     )
     if(!updateResource){
-        return res.status(400).send({ message: 'Cant find resource'});
+        return res.status(400).send({ message: 'Wrong syntax'});
     }else{
         return res.status(200).send(updateResource);
     }

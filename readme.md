@@ -14,12 +14,16 @@ Problem 6: Architecture
 
 Module name: Scoreboard 
 
-Overview:
++ Flow chart
+![Alt text](/99tech_problem6_flow_chart.jpg?raw=true "Flow chart")
+
++ Overview:
 Website have a scoreboard shows the top 10 users scores, score always update, user can do mission (an action) and complete mission will increase the user score
 Version: 1.0.0.
 Author: Chau Nhat Dang.
 Date: April 10,2024.
-Table of Contents:
+
++ Table of Contents:
 1. Introduction
 2. Functionality
 3. Endpoints
@@ -31,7 +35,7 @@ Table of Contents:
 9. Deployment
 10. Testing
 
-Software Requirements Specification for Scoreboard module
++ Software Requirements Specification for Scoreboard module
 1. Introduction:
 The Leaderboard module is designed to track and display rankings of users based on their performance in specific activities or competitions. It allows users to view their own rankings as well as rankings of others.
 2. Functionality:

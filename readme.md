@@ -9,6 +9,7 @@ Must run this first:
 2. npm run start
 
 And then everything is good to test
+Link to public postman collection for test: https://elements.getpostman.com/redirect?entityId=20383526-05587f15-425f-45ca-ace9-b23d449a80d2&entityType=collection
 
 Problem 6: Architecture
 

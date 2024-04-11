@@ -7,18 +7,18 @@ Problem 5: A Crude Server
 Must run this first:
 1. npm run build
 2. npm run start
+
 And then everything is good to test
 
 Problem 6: Architecture
 
-Module name: Leaderboard 
+Module name: Scoreboard 
 
 Overview:
 Website have a scoreboard shows the top 10 users scores, score always update, user can do mission (an action) and complete mission will increase the user score
-Version: 
-1.0.0
-Author: Chau Nhat Dang
-Date: April 10,2024
+Version: 1.0.0.
+Author: Chau Nhat Dang.
+Date: April 10,2024.
 Table of Contents:
 1. Introduction
 2. Functionality

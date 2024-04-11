@@ -1,12 +1,14 @@
 const express = require('express');
 import http from 'http';
 const app = express();
+import cors from 'cors';
 const mongoose = require('mongoose');
 import routes from "./routes/routes";
 import seeds from "./seeds/index";
 import { ConfigService } from './configs/config';
-import { ResourceModel } from './models/resource';
+import UserService, { ResourceModel } from './models/resource';
 import { Types } from 'mongoose';
+import { title } from 'process';
 
 mongoose.connect(
     //ConfigService.get('MONGO_URL2'),
@@ -14,11 +16,6 @@ mongoose.connect(
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 5000,
-        autoIndex: false, // Don't build indexes
-        maxPoolSize: 10, // Maintain up to 10 socket connections
-        socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-        family: 4
     }
 )
 .then(() => { 
@@ -28,11 +25,17 @@ err => {
     console.log(err);
 });
 
+app.use(cors({ origin: '*' }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const appServer = http.createServer(app);
 appServer.listen(ConfigService.get('API_PORT'),()=>{
-    console.log(ConfigService.get('MONGO_URL2'));
+    console.log(ConfigService.get('MONGO_URL'));
+    console.log(ConfigService.get('API_PORT'));
 });
-
+Object.entries(routes).forEach(
+    ([name, routes]) => app.use(`/${name}`, routes)
+);
 const seedRunAll = async () => {
     for (const seed of Object.values(seeds)) {
         console.log(seed);
@@ -47,28 +50,10 @@ seedRunAll()
     console.log(err);
 });
 
-const listResource = async (req, res) => {
-    let data = req.body;
-    console.log(data.body);
-    let listResources = [];
-    if(data.type != ''){
-        let resultSearch = await ResourceModel.find({
-            type: data.type
-        });
-        listResources = resultSearch;
-    }
-    if(data.type = ''){
-        let resultSearch = await ResourceModel.find({});
-        listResources = resultSearch;
-    }
-    if(!data){
-        res.status(400).send({ message: 'Error, wrong type or syntax'});
-    }
-    if(listResources=[]){
-        return res.status(200).send({message: 'Empty list, please choose another type'});
-    }
-    else {
-        return res.status(200).send({list: listResources});
-    }
-}
+/*
 app.get("/list-resource", listResource );
+app.post("/create-resource", createResource );
+app.get("/list-all", listAll);
+app.post("/update-resource2", updateResource);
+app.delete("/delete-one", deleteOne);
+app.delete("/delete-many", deleteMany);*/
